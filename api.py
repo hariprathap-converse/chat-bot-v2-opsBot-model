@@ -19,6 +19,7 @@ from llm_metadata_extractor import (
 )
 from routes.text_ai import router as text_ai_router
 from fastapi import WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 
 # -------------------------
 # App setup
@@ -26,6 +27,18 @@ from fastapi import WebSocket, WebSocketDisconnect
 load_dotenv()
 app = FastAPI(title="HRMS Orchestrator API")
 
+origins = [
+    "http://localhost:3000",   # React / Next.js
+    "http://localhost:5173",   # Vite
+    "http://127.0.0.1:3000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,        # or ["*"]
+    allow_credentials=True,
+    allow_methods=["*"],          # GET, POST, PUT, DELETE, OPTIONS
+    allow_headers=["*"],          # Authorization, Content-Type, etc
+)
 
 app.include_router(text_ai_router)
 
