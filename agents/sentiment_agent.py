@@ -6,19 +6,42 @@ class SentimentAgent:
         messages = [
             {
                 "role": "system",
-                "content": (
-                    "Evaluate the sentiment of the given input text, taking into account its "
-                    "emotional tone, subtle language cues, and cultural or contextual factors. "
-                    "Classify the tone of the text into one of the following categories: "
-                    "Positive, Negative, or Neutral. "
-                    "Look for sarcasm, emoticons, or specialized terminology that could affect "
-                    "the sentiment reading. In cases of mixed emotions, identify the most "
-                    "dominant sentiment. Analyze neutral phrases that may have positive or "
-                    "negative undertones, and gauge the message's urgency or significance. "
-                    "Your response must be ONLY ONE WORD. "
-                    "Capitalize the first letter. "
-                    "Do NOT add any explanations."
-                )
+                "content": """
+                You are a sentiment analysis system with explainable output.
+                
+                TASK:
+                Evaluate the sentiment of the given input text.
+                
+                SENTIMENT CATEGORIES:
+                Positive, Negative, Neutral.
+                
+                EXPLAINABLE AI REQUIREMENT:
+                After selecting the sentiment, provide a ONE-LINE explanation describing
+                why the text reflects that sentiment.
+                
+                ANALYSIS GUIDELINES:
+                - Consider emotional tone, wording, and context.
+                - Detect sarcasm, frustration, praise, urgency, or dissatisfaction.
+                - In case of mixed emotions, select the dominant sentiment.
+                
+                STRICT OUTPUT FORMAT (MUST FOLLOW EXACTLY):
+                sentiment | explanation
+                
+                RULES:
+                - The sentiment MUST be exactly one of: Positive, Negative, Neutral.
+                - The explanation MUST be a single sentence.
+                - Do NOT use new lines.
+                - Do NOT add extra text, labels, or formatting.
+                - Do NOT mention the analysis process.
+                - Capitalize the first letter of the sentiment.
+                
+                EXAMPLES:
+                Positive | The text expresses satisfaction and appreciation using positive language.
+                Negative | The text conveys frustration and dissatisfaction with the situation.
+                Neutral | The text presents information without emotional emphasis.
+                
+                Return ONLY the formatted output.
+                """
             },
             {
                 "role": "user",

@@ -6,20 +6,34 @@ class ClassifyAgent:
         messages = [
             {
                 "role": "system",
-                "content": (
-                    "Classify the given input text into ONE of the following categories ONLY:\n"
-                    "sports, politics, technology, business, health, entertainment, unclear.\n\n"
-                    "Analyze the key themes and context of the provided text and classify it into "
-                    "the most appropriate category from the list above. Take into consideration "
-                    "any subcategories, industry-specific terminology, and the possibility of "
-                    "ambiguous classification.\n\n"
-                    "If the text does not clearly fit into a single category, pick the closest "
-                    "category or label it as 'unclear'.\n\n"
-                    "Your response must contain ONLY the exact text of one category from the list.\n"
-                    "Do NOT explain.\n"
-                    "Do NOT add extra words.\n"
-                    "Do NOT use categories not listed."
-                )
+                "content": """
+            You are a text classification system with explainable output.
+            
+            TASK:
+            Classify the given input text into ONE of the following categories ONLY:
+            sports, politics, technology, business, health, entertainment, unclear, etc...
+            
+            EXPLAINABLE AI REQUIREMENT:
+            After selecting the category, provide a ONE-LINE explanation explaining
+            why the text belongs to that category.
+            
+            STRICT OUTPUT FORMAT (MUST FOLLOW EXACTLY):
+            category | explanation
+            
+            RULES:
+            - The category MUST be exactly one from the allowed list.
+            - The explanation MUST be a single sentence.
+            - Do NOT use new lines.
+            - Do NOT add extra text, labels, or formatting.
+            - Do NOT mention the classification process or the word 'category'.
+            - If classification is ambiguous, use 'unclear' with a reason.
+            
+            EXAMPLES:
+            sports | The text focuses on players, matches, and competitive sporting events.
+            technology | The text discusses software, systems, or technological advancements.
+            
+            Return ONLY the formatted output.
+            """
             },
             {
                 "role": "user",
