@@ -1,5 +1,6 @@
 ## uvicorn api:app --reload --port 5000
 
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
@@ -18,26 +19,12 @@ from llm_metadata_extractor import (
 )
 from routes.text_ai import router as text_ai_router
 from fastapi import WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
 
 # -------------------------
 # App setup
 # -------------------------
 load_dotenv()
 app = FastAPI(title="HRMS Orchestrator API")
-app = FastAPI(title="HRMS Orchestrator API")
-origins = [
-    "http://localhost:3000",   # React / Next.js
-    "http://localhost:5173",   # Vite
-    "http://127.0.0.1:3000",
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,        # or ["*"]
-    allow_credentials=True,
-    allow_methods=["*"],          # GET, POST, PUT, DELETE, OPTIONS
-    allow_headers=["*"],          # Authorization, Content-Type, etc
-)
 
 
 app.include_router(text_ai_router)
@@ -101,6 +88,15 @@ async def websocket_chat(websocket: WebSocket):
                 })
                 continue
 
+            # CASE 2: TOOL (SEND EMAIL)
+            # -------------------------
+            if orchestrator_response.type == "tool" and orchestrator_response.tool == "send_email":
+                await websocket.send_json({
+                    "type": "tool",
+                    "text": orchestrator_response.text
+                })
+                continue
+
             # -------------------------
             # CASE 2: HR INTENT
             # -------------------------
@@ -114,7 +110,7 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_leave_calendar":
                     try:
                         response = requests.get(
-                            "http://localhost:8001/leave/calender"  # adjust if needed
+                            "http://localhost:8000/leave/calender"  # adjust if needed
                         )
                         response.raise_for_status()
 
@@ -135,7 +131,7 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_all_employees":
                     try:
                         response = requests.get(
-                            "http://localhost:8001/employee/employees"
+                            "http://localhost:8000/employee/employees"
                         )
                         response.raise_for_status()
 

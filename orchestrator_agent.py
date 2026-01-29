@@ -26,6 +26,7 @@ Your task:
   - create_employee
   - get_leave_calendar → user wants to check leave balance, remaining leaves, leave summary, or leave details
   - get_all_employees -> user wants to see all employees, employee list, or employee details
+  - send_email → user wants to send an email to someone
   - create_role → user wants to create a role
   - unknown → HR-related but unsupported request
 
@@ -35,6 +36,28 @@ STRICT OUTPUT RULES:
 
 - If it is an HR-related request, return JSON:
   {{ "type": "intent", "intent": "<intent>" }}
+
+Examples for send_email:
+- "send an email to hr about my leave"
+- "mail my manager that I will be late today"
+- "send email to gokul@gmail.com regarding project update"
+- "email hari about today's meeting"
+
+If the user wants to send an email, return JSON ONLY in this format:
+{{
+  "type": "tool",
+  "tool": "send_email",
+  "text": {{
+    "to": "<email address or person name>",
+    "subject": "<email subject>",
+    "body": "<email body>"
+  }}
+}}
+
+Rules:
+- Extract recipient, subject, and body from the user message
+- If subject is not explicitly mentioned, infer a short subject
+- If body is not explicit, rewrite the user message as a polite email
 
 - Return JSON ONLY.
 - Do NOT include explanations.
