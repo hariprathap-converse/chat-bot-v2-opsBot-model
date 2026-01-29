@@ -24,11 +24,12 @@ Your task:
 - If the user message is a greeting, small talk, or general conversation,
   respond normally like a friendly chatbot.
 - If the user message is related to HR actions, classify it into one of the intents below.
-  - apply_leave
-  - create_employee
+  - apply_leave → user wants to apply for leave, take leave, request leave
+  - create_employee → user wants to add or create a new employee
   - get_leave_calendar → user wants to check leave balance, remaining leaves, leave summary, or leave details
   - get_all_employees -> user wants to see all employees, employee list, or employee details
   - send_email → user wants to send an email to someone
+  - get_pending_leaves → user wants to see pending leaves, leave requests awaiting approval, approval pending leaves, leaves waiting for approval, my pending leave requests, pending leave applications
   - create_role → user wants to create a role
   - unknown → HR-related but unsupported request
 

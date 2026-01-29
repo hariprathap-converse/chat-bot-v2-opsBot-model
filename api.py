@@ -110,7 +110,7 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_leave_calendar":
                     try:
                         response = requests.get(
-                            "http://localhost:8000/leave/calender"  # adjust if needed
+                            "http://localhost:8001/leave/calender"  # adjust if needed
                         )
                         response.raise_for_status()
 
@@ -131,7 +131,7 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_all_employees":
                     try:
                         response = requests.get(
-                            "http://localhost:8000/employee/employees"
+                            "http://localhost:8001/employee/employees"
                         )
                         response.raise_for_status()
 
@@ -143,6 +143,27 @@ async def websocket_chat(websocket: WebSocket):
                         await websocket.send_json({
                             "type": "message",
                             "text": "Failed to fetch employee list."
+                        })
+
+                    continue
+
+                # SPECIAL CASE: GET pending leaves
+                # ----------------------------------
+                if intent == "get_pending_leaves":
+                    try:
+                        response = requests.get(
+                            "http://localhost:8001/leave/pending/leave"
+                        )
+                        response.raise_for_status()
+
+                        await websocket.send_json({
+                            "type": "table",
+                            "text": response.json()
+                        })
+                    except Exception:
+                        await websocket.send_json({
+                            "type": "message",
+                            "text": "Failed to fetch pending leaves."
                         })
 
                     continue
