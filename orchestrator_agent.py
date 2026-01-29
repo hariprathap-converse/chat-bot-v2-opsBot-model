@@ -1,7 +1,7 @@
 import json
 from pydantic import BaseModel
 from ai_client import AzureAIClient
-from typing import Optional
+from typing import Optional ,Dict, Any
 
 # class IntentResponse(BaseModel):                                                    
 #     intent: str
@@ -9,6 +9,8 @@ class OrchestratorResponse(BaseModel):                                  # This d
     type: str          
     intent: Optional[str] = None
     reply: Optional[str] = None
+    tool: Optional[str] = None
+    text: Optional[Dict[str, Any]] = None
 
 class OrchestratorAgent:
     def __init__(self, ai_client: AzureAIClient):
