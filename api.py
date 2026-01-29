@@ -135,7 +135,7 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_all_employees":
                     try:
                         response = requests.get(
-                            "http://localhost:8000/employee/employees"
+                            "http://localhost:8001/employee/employees"
                         )
                         response.raise_for_status()
 
