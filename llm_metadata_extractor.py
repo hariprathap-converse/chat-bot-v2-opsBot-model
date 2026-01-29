@@ -14,6 +14,8 @@ INTENT_MAP = {
     ("GET", "/leave/calender"): "get_leave_calendar",
     ("POST", "/admin/roles"): "create_role",
     ("GET", "/employee/employees"): "get_all_employees",
+    ("GET", "/leave/pending/leave"): "get_pending_leaves",
+    ("GET", "/leave/details") : "get_upcoming_leaves"
 }
 
 def get_capability_by_intent(capabilities, intent):

@@ -168,6 +168,39 @@ async def websocket_chat(websocket: WebSocket):
 
                     continue
 
+                # SPECIAL CASE: GET upcoming (approved) leaves
+                # ----------------------------------
+                if intent == "get_upcoming_leaves":
+                    try:
+                        response = requests.get("http://localhost:8001/leave/details")
+                        response.raise_for_status()
+
+                        leaves = response.json()
+
+                        approved_leaves = [
+                            leave for leave in leaves
+                            if leave.get("status") == "approved"
+                        ]
+
+                        if approved_leaves:
+                            await websocket.send_json({
+                                "type": "table",
+                                "text": approved_leaves
+                            })
+                        else:
+                            await websocket.send_json({
+                                "type": "message",
+                                "text": "You have no upcoming approved leaves."
+                            })
+
+                    except Exception:
+                        await websocket.send_json({
+                            "type": "message",
+                            "text": "Failed to fetch leave details."
+                        })
+
+                    continue
+
                 # DEFAULT CASE: FORM-BASED HR INTENTS
                 capability = get_capability_by_intent(capabilities, intent)
 
