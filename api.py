@@ -20,6 +20,7 @@ from llm_metadata_extractor import (
 from routes.text_ai import router as text_ai_router
 from fastapi import WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from routes.document_ai import router as document_ai_router
 
 # -------------------------
 # App setup
@@ -41,6 +42,7 @@ app.add_middleware(
 )
 
 app.include_router(text_ai_router)
+app.include_router(document_ai_router)
 
 # -------------------------
 # Initialize once (VERY IMPORTANT)
@@ -167,12 +169,24 @@ async def websocket_chat(websocket: WebSocket):
                         response = requests.get(
                             "http://localhost:8001/leave/pending/leave"
                         )
+
+                        # ✅ CASE 1: No pending leaves (404 from backend)
+                        if response.status_code == 404:
+                            data = response.json()
+                            await websocket.send_json({
+                                "type": "message",
+                                "text": data.get("detail", "You have no pending leaves.")
+                            })
+                            continue
+                        
+                        # ✅ CASE 2: Success
                         response.raise_for_status()
 
                         await websocket.send_json({
                             "type": "table",
                             "text": response.json()
                         })
+
                     except Exception:
                         await websocket.send_json({
                             "type": "message",
@@ -186,6 +200,15 @@ async def websocket_chat(websocket: WebSocket):
                 if intent == "get_upcoming_leaves":
                     try:
                         response = requests.get("http://localhost:8001/leave/details")
+
+                        if response.status_code == 404:
+                            data = response.json()
+                            await websocket.send_json({
+                                "type": "message",
+                                "text": data.get("detail", "You have no pending leaves.")
+                            })
+                            continue
+
                         response.raise_for_status()
 
                         leaves = response.json()
