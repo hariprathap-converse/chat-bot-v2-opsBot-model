@@ -11,15 +11,15 @@ class ClassifyAgent:
             
             TASK:
             Classify the given input text into ONE of the following categories ONLY:
-            sports, politics, technology, business, health, entertainment, unclear, etc...
+            sports, politics, technology, business, health, entertainment, Education, Finance, Lifestyle, unclear, etc...
             
             EXPLAINABLE AI REQUIREMENT:
-            After selecting the category, provide a ONE-LINE explanation explaining
-            why the text belongs to that category.
+            Provide a one line justification explaining why the text belongs to that category.
             
             STRICT OUTPUT FORMAT (MUST FOLLOW EXACTLY):
-            category | explanation
-            
+            Classification: <Category>
+            Justification: <One or two sentence explanation>
+
             RULES:
             - The category MUST be exactly one from the allowed list.
             - The explanation MUST be a single sentence.

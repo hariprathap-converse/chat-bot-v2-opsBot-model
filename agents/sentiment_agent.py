@@ -24,8 +24,9 @@ class SentimentAgent:
                 - Detect sarcasm, frustration, praise, urgency, or dissatisfaction.
                 - In case of mixed emotions, select the dominant sentiment.
                 
-                STRICT OUTPUT FORMAT (MUST FOLLOW EXACTLY):
-                sentiment | explanation
+                OUTPUT FORMAT (STRICT – must match exactly):
+                Result: <Sentiment>
+                Justification: <One sentence explanation>
                 
                 RULES:
                 - The sentiment MUST be exactly one of: Positive, Negative, Neutral.
