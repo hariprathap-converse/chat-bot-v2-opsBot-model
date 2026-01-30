@@ -14,3 +14,6 @@ def extract_text_with_ocr(pdf_path: str) -> str:
             full_text.append(text)
 
     return "\n".join(full_text)
+
+
+# Here Scanned pdfs will also work

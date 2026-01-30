@@ -11,7 +11,7 @@ def extract_text_from_pdf(file_path: str) -> str:
 
     return "\n".join(full_text)
 
-
+# This is for PDF text only even scanned pdfs wont work
 """
 Opens PDF
 
