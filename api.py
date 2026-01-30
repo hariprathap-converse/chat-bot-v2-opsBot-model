@@ -70,6 +70,27 @@ class ChatResponse(BaseModel):
     response: dict
 
 
+def enhance_message_with_llm(ai_client, raw_message: str) -> str:
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a helpful enterprise assistant. "
+                "Rewrite the given system message into a friendly, clear, "
+                "user-facing response. Be polite and reassuring. "
+                "Do NOT mention technical details."
+            )
+        },
+        {
+            "role": "user",
+            "content": raw_message
+        }
+    ]
+
+    result = ai_client.chat(messages)
+    return result["choices"][0]["message"]["content"].strip()
+
+
 # -------------------------
 # WEBSOCKET Endpoint
 # -------------------------
@@ -172,10 +193,19 @@ async def websocket_chat(websocket: WebSocket):
 
                         # ✅ CASE 1: No pending leaves (404 from backend)
                         if response.status_code == 404:
-                            data = response.json()
+                            backend_msg = response.json().get(
+                                "detail",
+                                "You have no pending leave requests."
+                            )
+
+                            enhanced_msg = enhance_message_with_llm(
+                                ai_client,
+                                backend_msg
+                            )
+
                             await websocket.send_json({
                                 "type": "message",
-                                "text": data.get("detail", "You have no pending leaves.")
+                                "text": enhanced_msg
                             })
                             continue
                         
@@ -202,10 +232,15 @@ async def websocket_chat(websocket: WebSocket):
                         response = requests.get("http://localhost:8001/leave/details")
 
                         if response.status_code == 404:
-                            data = response.json()
+                            backend_msg = response.json().get("detail", "No leave details found.")
+                            enhanced_msg = enhance_message_with_llm(
+                                ai_client,
+                                backend_msg
+                            )
+
                             await websocket.send_json({
                                 "type": "message",
-                                "text": data.get("detail", "You have no pending leaves.")
+                                "text": enhanced_msg
                             })
                             continue
 
@@ -224,11 +259,15 @@ async def websocket_chat(websocket: WebSocket):
                                 "text": approved_leaves
                             })
                         else:
+                            enhanced_msg = enhance_message_with_llm(
+                                ai_client,
+                                "You do not have any approved upcoming leaves."
+                            )
+
                             await websocket.send_json({
                                 "type": "message",
-                                "text": "You have no upcoming approved leaves."
+                                "text": enhanced_msg
                             })
-
                     except Exception:
                         await websocket.send_json({
                             "type": "message",
