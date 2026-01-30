@@ -6,6 +6,7 @@ from utils.pdf_text_extractor import extract_text_from_pdf
 from agents.extract_document_agent import InvoiceExtractAgent
 from ai_client import AzureAIClient
 from dotenv import load_dotenv
+from utils.ocr_extractor import extract_text_with_ocr
 
 load_dotenv()
 
@@ -35,13 +36,17 @@ async def extract_invoice(file: UploadFile = File(...)):
 
         # 2️⃣ Extract text from PDF
         extracted_text = extract_text_from_pdf(temp_filename)
+ 
+        if not extracted_text.strip():
+            # 🔁 fallback to OCR
+            extracted_text = extract_text_with_ocr(temp_filename)
 
         if not extracted_text.strip():
             raise HTTPException(
                 status_code=400,
-                detail="No text found in PDF. The file may be scanned."
+                detail="Unable to extract text from document."
             )
-
+        
         # 3️⃣ Call LLM agent
         result = invoice_agent.extract(extracted_text)
 

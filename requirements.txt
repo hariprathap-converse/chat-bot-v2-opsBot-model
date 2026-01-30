@@ -24,3 +24,6 @@ watchfiles==1.1.1
 websockets==16.0
 pdfplumber
 python-multipart
+pytesseract
+Pillow
+pdf2image
