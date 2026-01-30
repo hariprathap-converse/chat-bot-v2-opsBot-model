@@ -23,7 +23,10 @@ class SentimentAgent:
                 - Consider emotional tone, wording, and context.
                 - Detect sarcasm, frustration, praise, urgency, or dissatisfaction.
                 - In case of mixed emotions, select the dominant sentiment.
-
+                
+                OUTPUT FORMAT (STRICT – must match exactly):
+                Result: <Sentiment>
+                Justification: <One sentence explanation>
                 
                 RULES:
                 - The sentiment MUST be exactly one of: Positive, Negative, Neutral.
@@ -33,21 +36,9 @@ class SentimentAgent:
                 - Do NOT mention the analysis process.
                 - Capitalize the first letter of the sentiment.
 
-                FINAL RESPONSE FORMAT:
-                Return a JSON object with the following structure:
-
-                {
-                "Result": "<Sentiment>",
-                "sentiment": "Result: <Sentiment>\nJustification: <One sentence explanation>"
-                }
-
-                - The response MUST be a valid JSON object, not a JSON string.
-
-                Rules:
-                - "Result" must contain only the sentiment value.
-                - "sentiment" must contain the full formatted explanation exactly as shown.
-                - Do NOT add any extra fields.
+                Important rule: In justification it should not return the words like positive, negative or neutral..
                 
+            
                 
                 Return ONLY the formatted output.
                 """
