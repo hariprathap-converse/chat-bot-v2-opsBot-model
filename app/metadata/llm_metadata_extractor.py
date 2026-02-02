@@ -6,7 +6,7 @@ OPENAPI_URL = "http://localhost:8001/openapi.json"
 def fetch_openapi():
     response = requests.get(OPENAPI_URL)
     response.raise_for_status()
-    return response.json()
+    return response.json()              # Backend replies with a big JSON, This JSON is your backend’s API dictionary , At this point, AI now knows everything your backend can do.
 
 INTENT_MAP = {
     ("POST", "/leave/"): "apply_leave",
