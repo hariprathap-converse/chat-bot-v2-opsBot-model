@@ -1,7 +1,7 @@
 # uvicorn api:app --reload --port 5000
 
 import json
-from ai_client import AzureAIClient
+from app.llm.ai_client import AzureAIClient
 
 FORM_TRANSFORM_SYSTEM_PROMPT = """
 You are a backend form transformer.

@@ -1,26 +1,26 @@
 ## uvicorn api:app --reload --port 5000
 
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
 import json
 from dotenv import load_dotenv
 import requests
-from ai_client import AzureAIClient
-from orchestrator_agent import OrchestratorAgent
-from form_transformer import FormTransformer
-from llm_metadata_extractor import (
+from app.llm.ai_client import AzureAIClient
+from app.orchestrator.orchestrator_agent import OrchestratorAgent
+from app.agents.form_transformer import FormTransformer
+from app.metadata.llm_metadata_extractor import (
     fetch_openapi,
     extract_all_capabilities,
     extract_form_fields_from_schema,
     get_capability_by_intent,
     INTENT_MAP
 )
-from routes.text_ai import router as text_ai_router
+from app.api.text_ai import router as text_ai_router
+from app.api.document_ai import router as document_ai_router
+
 from fastapi import WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from routes.document_ai import router as document_ai_router
 
 # -------------------------
 # App setup

@@ -2,12 +2,12 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 import os
 import uuid
 
-from agents.extract_document_agent import InvoiceExtractAgent
-from ai_client import AzureAIClient
+from app.agents.extract_document_agent import InvoiceExtractAgent
+from app.llm.ai_client import AzureAIClient
 from dotenv import load_dotenv
-from utils.pdf_text_extractor import extract_text_from_pdf
-from utils.ocr_extractor import extract_text_with_ocr
-from utils.image_ocr_extractor import extract_text_from_image
+from app.utils.pdf_text_extractor import extract_text_from_pdf
+from app.utils.ocr_extractor import extract_text_with_ocr
+from app.utils.image_ocr_extractor import extract_text_from_image
 
 load_dotenv()
 

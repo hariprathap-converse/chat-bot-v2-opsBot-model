@@ -1,6 +1,6 @@
 import json
 from pydantic import BaseModel
-from ai_client import AzureAIClient
+from app.llm.ai_client import AzureAIClient
 from typing import Optional ,Dict, Any
 
 # class IntentResponse(BaseModel):                                                    

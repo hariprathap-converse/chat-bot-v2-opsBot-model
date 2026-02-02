@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from schemas import TextInput, SummarizeResponse, ClassifyResponse, SentimentResponse
-from agents.summarize_agent import SummarizeAgent
-from agents.classify_agent import ClassifyAgent
-from agents.sentiment_agent import SentimentAgent
-from ai_client import AzureAIClient
+from app.schemas.schemas import TextInput, SummarizeResponse, ClassifyResponse, SentimentResponse
+from app.agents.summarize_agent import SummarizeAgent
+from app.agents.classify_agent import ClassifyAgent
+from app.agents.sentiment_agent import SentimentAgent
+from app.llm.ai_client import AzureAIClient
 import os
 from dotenv import load_dotenv
 from fastapi.responses import StreamingResponse
